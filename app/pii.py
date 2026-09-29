@@ -8,14 +8,16 @@ PII_PATTERNS: dict[str, str] = {
     "phone_vn": r"(?<!\d)(?:\+84|0)(?:[ .-]?\d){9}(?!\d)",
     "cccd": r"\b\d{12}\b",
     "credit_card": r"\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b",
-    # TODO: Add more patterns (e.g., Passport, Vietnamese address keywords)
+    # Require a label: an unlabelled letter plus digits can be an ordinary ID.
+    "passport": r"\b(?:passport|hộ\s*chiếu)\s*(?:số|number|no\.?|#)?\s*[:#-]?\s*[A-Z]\d{7,8}\b",
+    "address_vn": r"\b(?:địa\s*chỉ|dia\s*chi|address)\s*[:：]\s*[^\r\n,;]+(?:,[^\r\n;]+)*",
 }
 
 
 def scrub_text(text: str) -> str:
     safe = text
     for name, pattern in PII_PATTERNS.items():
-        safe = re.sub(pattern, f"[REDACTED_{name.upper()}]", safe)
+        safe = re.sub(pattern, f"[REDACTED_{name.upper()}]", safe, flags=re.IGNORECASE)
     return safe
 
 
