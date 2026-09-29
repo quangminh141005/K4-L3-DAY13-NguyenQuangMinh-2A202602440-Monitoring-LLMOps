@@ -51,7 +51,11 @@ class LabAgent:
             },
         ):
             started = time.perf_counter()
-            docs = retrieve(message)
+            with langfuse_client.start_as_current_observation(
+                name="retrieval", as_type="retriever"
+            ) as retrieval:
+                docs = retrieve(message)
+                retrieval.update(metadata={"doc_count": len(docs)})
             prompt = resolve_prompt(
                 langfuse_client,
                 feature=feature,
@@ -71,13 +75,33 @@ class LabAgent:
                 },
                 version=prompt.version,
             )
-            # TODO (CP2): instrument retrieve() and FakeLLM.generate() as child
-            # observations. The nested generation must receive prompt, usage and cost.
             with propagate_attributes(prompt=prompt.managed_prompt):
-                response = self.llm.generate(prompt.text)
+                with langfuse_client.start_as_current_observation(
+                    name="llm-generation",
+                    as_type="generation",
+                    model=self.model,
+                    prompt=prompt.managed_prompt,
+                    # The compiled prompt contains the user's message; keep it out of traces.
+                    input={"prompt_name": prompt.name, "prompt_version": prompt.version},
+                ) as generation:
+                    response = self.llm.generate(prompt.text)
+                    cost_usd = self._estimate_cost(
+                        response.usage.input_tokens, response.usage.output_tokens
+                    )
+                    generation.update(
+                        output={"answer_preview": summarize_text(response.text)},
+                        usage_details={
+                            "input": response.usage.input_tokens,
+                            "output": response.usage.output_tokens,
+                        },
+                        cost_details={
+                            "input": round(response.usage.input_tokens / 1_000_000 * 3, 6),
+                            "output": round(response.usage.output_tokens / 1_000_000 * 15, 6),
+                        },
+                        metadata={"ttft_ms": response.ttft_ms, "estimated_cost_usd": cost_usd},
+                    )
             quality_score = self._heuristic_quality(message, response.text, docs)
             latency_ms = int((time.perf_counter() - started) * 1000)
-            cost_usd = self._estimate_cost(response.usage.input_tokens, response.usage.output_tokens)
 
         metrics.record_request(
             latency_ms=latency_ms,
