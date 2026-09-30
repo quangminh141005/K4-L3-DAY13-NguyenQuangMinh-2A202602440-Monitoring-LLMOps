@@ -19,6 +19,30 @@ Giữ time range mặc định 60 phút, refresh 30 giây và hiển thị thres
 
 ## Cách dựng
 
+### Dashboard HTML có sẵn trong repo
+
+Từ môi trường đã cài `requirements.txt`, tạo trang sáu panel:
+
+```bash
+python scripts/build_dashboard.py
+```
+
+Mở `submission/evidence/dashboard.html` trong trình duyệt. Lệnh dùng 60 phút
+tính đến hiện tại; chạy lại sau mỗi load test để cập nhật trang. Với log lịch
+sử, chọn chính xác cửa sổ cần chụp:
+
+```bash
+python scripts/build_dashboard.py --end 2026-09-29T17:00:00Z
+```
+
+Trang thể hiện tên, đơn vị, khoảng thời gian, giá trị tổng hợp và đường đỏ
+threshold ở cả sáu panel. Cost và token dùng đường lũy kế trong cửa sổ để
+threshold tổng có cùng đơn vị; error breakdown và retrieval success nằm trong
+panel Errors. Nếu cửa sổ không có mẫu, trang hiển thị `—` thay vì số 0 giả.
+Lưu thêm ảnh màn hình `11-dashboard-overview.png` để đáp ứng evidence chấm điểm.
+
+### Công cụ khác
+
 1. Hoàn thiện logging/PII và chạy API.
 2. Chạy `python scripts/load_test.py --concurrency 5` để tạo baseline.
 3. Dùng `data/logs.jsonl` làm nguồn chuẩn để tạo đúng sáu panel bằng Streamlit, notebook, Grafana hoặc công cụ tương đương. Langfuse vẫn là nơi mở trace/prompt version để điều tra sâu.

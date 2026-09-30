@@ -80,7 +80,7 @@ Chạy baseline ở terminal thứ hai:
 python scripts/load_test.py
 python scripts/validate_logs.py
 python scripts/validate_dashboard.py
-python -m pytest -q
+python -m pytest -qr
 ```
 
 Baseline log chưa đạt là bình thường vì các `TODO` của CP1 chưa được làm. Ghi lại kết quả baseline vào `submission/REPORT.md` trước khi sửa.
@@ -151,9 +151,9 @@ git status --short
 git log -1 --oneline
 ```
 
-- [ ] Không có `.env`, secret, `.venv/`, PII thô hoặc evidence của học viên/lớp khác.
-- [ ] `submission/REPORT.md` đã đủ; mọi ảnh dùng đường dẫn tương đối và mở được.
-- [ ] Bạn demo và giải thích được luồng Metrics → Logs → Traces → Root cause.
+- [x] Không có `.env`, secret, `.venv/`, PII thô hoặc evidence của học viên/lớp khác.
+- [x] `submission/REPORT.md` đã đủ; mọi ảnh dùng đường dẫn tương đối và mở được.
+- [x] Bạn demo và giải thích được luồng Metrics → Logs → Traces → Root cause.
 
 ## Tên repo bài nộp
 

@@ -1,25 +1,28 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: Fast successful request SLO burn
+    severity: critical
+    condition: 'received_requests >= 20 and (received_requests - fast_successful_requests) / received_requests > 0.005 over rolling 30m'
+    duration: 10m
     type: symptom-based
     channel: slack
-    owner: TODO
+    slack_channel: '#llmops-alerts'
+    owner: on-call application engineer
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: Elevated request failure rate
+    severity: high
+    condition: 'received_requests >= 20 and request_failed / request_received * 100 > 2 over rolling 10m'
+    duration: 5m
     type: symptom-based
     channel: slack
-    owner: TODO
+    slack_channel: '#llmops-alerts'
+    owner: on-call application engineer
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: Retrieval answer availability degraded
+    severity: high
+    condition: 'retrieval_attempts >= 20 and successful_retrievals / retrieval_attempts * 100 < 90 over rolling 15m'
+    duration: 10m
     type: symptom-based
     channel: slack
-    owner: TODO
+    slack_channel: '#llmops-alerts'
+    owner: on-call RAG engineer
     runbook: docs/alerts.md#alert-3
