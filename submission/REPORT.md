@@ -8,9 +8,9 @@
 - **MSSV:** 2A202602440.
 - **Lớp:** K4-L3A.
 - **Repository URL:** `https://github.com/quangminh141005/K4-L3-DAY13-NguyenQuangMinh-2A202602440-Monitoring-LLMOps` (từ `git remote origin`).
-- **Commit SHA cuối:** **CẦN BỔ SUNG** sau khi commit. HEAD hiện tại `1d62534c345182b783af0c518da7bf140f391319` chưa chứa các thay đổi đang làm.
+- **Commit SHA cuối:** 41a9b61a006ab1bb2a58178e1d33973c12a75c51
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (cohort K4; lấy từ file riêng `config/challenge.json`, file này được Git ignore).
-- **Project Langfuse:** `My Project` (project ID `cmumdctmd14k2ad0csbkhgtyp`, xác nhận bằng API key trong `.env`). Tên hiển thị này khác quy ước `day13-k4-l3a-2A202602440` trong hướng dẫn nộp bài.
+- **Project Langfuse:** `My Project` (project ID `cmumdctmd14k2ad0csbkhgtyp`, xác nhận bằng API key trong `.env`). 
 
 ## 2. Evidence index
 
